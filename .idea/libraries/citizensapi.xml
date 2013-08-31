@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="citizensapi">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../citizensapi.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

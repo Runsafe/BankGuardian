@@ -1,1 +1,5 @@
-option: value
+spawnPoint:
+  world: test
+  x: -679
+  y: 62
+  z: 1050
