@@ -21,10 +21,15 @@ public class Encounter implements IConfigurationChanged, IPlayerTeleport
 	{
 		RunsafeWorld spawnWorld = spawnPoint.getWorld();
 		RunsafeWorld destinationWorld = to.getWorld();
-		if (destinationWorld.isWorld(spawnWorld) && !destinationWorld.isWorld(from.getWorld()))
+		RunsafeWorld sourceWorld = from.getWorld();
+
+		if (destinationWorld.isWorld(spawnWorld) && !destinationWorld.isWorld(sourceWorld))
 		{
-			player.sendColouredMessage("Here you would trigger a world check.");
 			player.sendColouredMessage("There are %d players in the destination world", destinationWorld.getPlayers().size());
+		}
+		else if (sourceWorld.isWorld(spawnWorld) && !sourceWorld.isWorld(destinationWorld))
+		{
+			player.sendColouredMessage("Leaving world, %d players.", sourceWorld.getPlayers().size());
 		}
 		return true;
 	}
