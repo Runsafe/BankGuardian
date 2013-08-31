@@ -1,14 +1,23 @@
 package no.runsafe.bankguardian;
 
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.npc.NPCRegistry;
 import no.runsafe.framework.api.IConfiguration;
 import no.runsafe.framework.api.event.player.IPlayerTeleport;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.minecraft.RunsafeLocation;
 import no.runsafe.framework.minecraft.RunsafeWorld;
 import no.runsafe.framework.minecraft.player.RunsafePlayer;
+import org.bukkit.entity.EntityType;
 
 public class Encounter implements IConfigurationChanged, IPlayerTeleport
 {
+	public Encounter()
+	{
+		registry = CitizensAPI.getNPCRegistry();
+	}
+
 	@Override
 	public void OnConfigurationChanged(IConfiguration configuration)
 	{
@@ -23,16 +32,31 @@ public class Encounter implements IConfigurationChanged, IPlayerTeleport
 		RunsafeWorld destinationWorld = to.getWorld();
 		RunsafeWorld sourceWorld = from.getWorld();
 
-		if (destinationWorld.isWorld(spawnWorld) && !destinationWorld.isWorld(sourceWorld))
+		if (!loaded && destinationWorld.isWorld(spawnWorld) && !destinationWorld.isWorld(sourceWorld))
 		{
-			player.sendColouredMessage("There are %d players in the destination world", destinationWorld.getPlayers().size());
+			loadEncounter();
 		}
-		else if (sourceWorld.isWorld(spawnWorld) && !sourceWorld.isWorld(destinationWorld))
+		else if (loaded && sourceWorld.isWorld(spawnWorld) && !sourceWorld.isWorld(destinationWorld) && sourceWorld.getPlayers().size() == 1)
 		{
-			player.sendColouredMessage("Leaving world, %d players.", sourceWorld.getPlayers().size());
+			unloadEncounter();
 		}
 		return true;
 	}
 
+	private void loadEncounter()
+	{
+		boss = registry.createNPC(EntityType.PLAYER,  "Astalor");
+		boss.spawn(spawnPoint.getRaw());
+	}
+
+	private void unloadEncounter()
+	{
+		if (boss != null)
+			boss.despawn();
+	}
+
 	private RunsafeLocation spawnPoint;
+	private NPCRegistry registry;
+	private NPC boss;
+	private boolean loaded;
 }
