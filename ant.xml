@@ -7,12 +7,12 @@
     <property name="framework.dir" value="../../Framework"/>
     <property name="runsafe.dir" value="${framework.dir}/lastStable/archive/build/jar"/>
     <property name="lib.dir" value="${framework.dir}/workspace/lib"/>
-	<property name="library.dir" value="lib"/>
+	<property name="api.dir" value="api"/>
 
     <path id="classpath">
         <fileset dir="${runsafe.dir}" includes="framework.jar"/>
         <fileset dir="${lib.dir}" includes="*.jar"/>
-		<fileset dir="${library.dir}" includes="*.jar"/>
+		<fileset dir="${api.dir}" includes="*.jar"/>
     </path>
 
     <target name="clean">

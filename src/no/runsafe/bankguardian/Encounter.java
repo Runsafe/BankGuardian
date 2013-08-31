@@ -16,7 +16,7 @@ public class Encounter implements IConfigurationChanged, IPlayerTeleport
 {
 	public Encounter(IOutput output)
 	{
-		registry = CitizensAPI.getNPCRegistry();
+		registry = CitizensAPI.getNPCRegistry(); // Citizens NPC handler.
 		loaded = false;
 		console = output;
 	}
@@ -37,10 +37,12 @@ public class Encounter implements IConfigurationChanged, IPlayerTeleport
 
 		if (!loaded && destinationWorld.isWorld(spawnWorld) && !destinationWorld.isWorld(sourceWorld))
 		{
+			// We are teleporting to the world with the encounter and it's not loaded, load it.
 			loadEncounter();
 		}
 		else if (loaded && sourceWorld.isWorld(spawnWorld) && !sourceWorld.isWorld(destinationWorld) && sourceWorld.getPlayers().size() == 1)
 		{
+			// We are teleporting away from the world with the encounter, it's loaded, and we're the last player.
 			unloadEncounter();
 		}
 		return true;
@@ -49,15 +51,15 @@ public class Encounter implements IConfigurationChanged, IPlayerTeleport
 	private void loadEncounter()
 	{
 		console.fine("Loading encounter");
-		boss = registry.createNPC(EntityType.PLAYER,  "Astalor");
-		boss.spawn(spawnPoint.getRaw());
+		boss = registry.createNPC(EntityType.PLAYER,  "Astalor"); // Create an NPC for the boss.
+		boss.spawn(spawnPoint.getRaw()); // Spawn it in the world at the position stored.
 	}
 
 	private void unloadEncounter()
 	{
 		console.fine("Unloading encounter");
-		if (boss != null)
-			boss.despawn();
+		if (boss != null) // Check we actually have a boss.
+			boss.despawn(); // Respawn it.
 	}
 
 	private RunsafeLocation spawnPoint;
