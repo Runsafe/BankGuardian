@@ -4,6 +4,7 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import no.runsafe.framework.api.IConfiguration;
+import no.runsafe.framework.api.IOutput;
 import no.runsafe.framework.api.event.player.IPlayerTeleport;
 import no.runsafe.framework.api.event.plugin.IConfigurationChanged;
 import no.runsafe.framework.minecraft.RunsafeLocation;
@@ -13,10 +14,11 @@ import org.bukkit.entity.EntityType;
 
 public class Encounter implements IConfigurationChanged, IPlayerTeleport
 {
-	public Encounter()
+	public Encounter(IOutput output)
 	{
 		registry = CitizensAPI.getNPCRegistry();
 		loaded = false;
+		console = output;
 	}
 
 	@Override
@@ -46,12 +48,14 @@ public class Encounter implements IConfigurationChanged, IPlayerTeleport
 
 	private void loadEncounter()
 	{
+		console.fine("Loading encounter");
 		boss = registry.createNPC(EntityType.PLAYER,  "Astalor");
 		boss.spawn(spawnPoint.getRaw());
 	}
 
 	private void unloadEncounter()
 	{
+		console.fine("Unloading encounter");
 		if (boss != null)
 			boss.despawn();
 	}
@@ -60,4 +64,5 @@ public class Encounter implements IConfigurationChanged, IPlayerTeleport
 	private NPCRegistry registry;
 	private NPC boss;
 	private boolean loaded;
+	private IOutput console;
 }
