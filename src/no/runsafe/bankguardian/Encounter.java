@@ -16,6 +16,7 @@ public class Encounter implements IConfigurationChanged, IPlayerTeleport
 	public Encounter()
 	{
 		registry = CitizensAPI.getNPCRegistry();
+		loaded = false;
 	}
 
 	@Override
